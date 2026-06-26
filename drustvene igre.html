@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GejmVeče – Pronađi svoju ekipu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --bg: #0d0d14;
+    --bg2: #13131f;
+    --bg3: #1a1a2e;
+    --surface: #1e1e30;
+    --surface2: #252540;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #f0f0f8;
+    --text2: #9898b8;
+    --text3: #55556a;
+    --purple: #7c6ff7;
+    --purple-light: #a99ff9;
+    --purple-dim: rgba(124,111,247,0.15);
+    --purple-dim2: rgba(124,111,247,0.08);
+    --green: #34c98a;
+    --green-dim: rgba(52,201,138,0.12);
+    --amber: #f5a623;
+    --amber-dim: rgba(245,166,35,0.12);
+    --red: #f05b5b;
+    --red-dim: rgba(240,91,91,0.12);
+    --teal: #38bdf8;
+    --teal-dim: rgba(56,189,248,0.12);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --radius-pill: 999px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+
+  /* PHONE SHELL */
+  .phone {
+    width: 390px;
+    min-height: 780px;
+    background: var(--bg2);
+    border-radius: 40px;
+    border: 1.5px solid var(--border2);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.6), 0 40px 80px rgba(0,0,0,.7), 0 0 120px rgba(124,111,247,0.08);
+  }
+
+  /* STATUS BAR */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    flex-shrink: 0;
+  }
+  .status-icons { display: flex; gap: 6px; align-items: center; }
+  .status-icons i { font-size: 11px; }
+
+  /* TOP BAR */
+  .topbar {
+    padding: 10px 20px 0;
+    flex-shrink: 0;
+  }
+  .topbar-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .app-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #a99ff9, #7c6ff7, #38bdf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .topbar-actions { display: flex; gap: 8px; }
+  .icon-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all 0.18s;
+    position: relative;
+    color: var(--text2);
+    font-size: 15px;
+  }
+  .icon-btn:hover { background: var(--surface2); border-color: var(--purple); color: var(--purple-light); }
+  .notif-badge {
+    position: absolute;
+    top: 7px; right: 7px;
+    width: 8px; height: 8px;
+    background: var(--red);
+    border-radius: 50%;
+    border: 2px solid var(--bg2);
+  }
+  .avatar-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--purple-dim);
+    border: 1.5px solid var(--purple);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--purple-light);
+    transition: all 0.18s;
+  }
+  .avatar-btn:hover { background: var(--purple-dim2); box-shadow: 0 0 0 3px rgba(124,111,247,0.2); }
+
+  /* TAB BAR */
+  .tab-bar {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    margin-top: 4px;
+  }
+  .tab {
+    flex: 1;
+    padding: 10px 4px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text3);
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.18s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+  .tab i { font-size: 16px; }
+  .tab.active { color: var(--purple-light); border-bottom-color: var(--purple); }
+  .tab:hover:not(.active) { color: var(--text2); }
+
+  /* SCREENS */
+  .screen { display: none; flex-direction: column; flex: 1; overflow: hidden; }
+  .screen.active { display: flex; }
+
+  /* SCROLL CONTENT */
+  .scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    scrollbar-width: none;
+  }
+  .scroll-content::-webkit-scrollbar { display: none; }
+
+  /* SEARCH */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 11px 16px;
+    transition: border-color 0.18s;
+  }
+  .search-bar:focus-within { border-color: var(--purple); }
+  .search-bar input {
+    border: none; background: none; outline: none;
+    font-size: 14px; color: var(--text);
+    flex: 1; font-family: 'Inter', sans-serif;
+  }
+  .search-bar input::placeholder { color: var(--text3); }
+  .search-bar i { color: var(--text3); font-size: 15px; }
+  .search-filter-btn {
+    color: var(--purple-light);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .search-filter-btn:hover { transform: rotate(15deg); }
+
+  /* CHIPS */
+  .chip-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+  .chip-row::-webkit-scrollbar { display: none; }
+  .chip {
+    white-space: nowrap;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.18s;
+    user-select: none;
+  }
+  .chip.active { background: var(--purple-dim); border-color: var(--purple); color: var(--purple-light); }
+  .chip:hover:not(.active) { border-color: var(--border2); background: var(--surface2); color: var(--text); }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+
+  /* SESSION CARD */
+  .session-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .session-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--card-accent, transparent);
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+  .session-card.rpg { --card-accent: linear-gradient(90deg, #7c6ff7, #a99ff9); }
+  .session-card.strat { --card-accent: linear-gradient(90deg, #34c98a, #38bdf8); }
+  .session-card.party { --card-accent: linear-gradient(90deg, #f5a623, #f05b5b); }
+  .session-card:hover {
+    border-color: var(--border2);
+    background: var(--surface2);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+  .card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+    padding-right: 8px;
+  }
+  .badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .badge-rpg { background: var(--purple-dim); color: var(--purple-light); border: 1px solid rgba(124,111,247,0.3); }
+  .badge-strat { background: var(--green-dim); color: var(--green); border: 1px solid rgba(52,201,138,0.3); }
+  .badge-party { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,166,35,0.3); }
+  .badge-dm { background: var(--red-dim); color: var(--red); border: 1px solid rgba(240,91,91,0.3); }
+  .badge-oneshot { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(56,189,248,0.3); }
+
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .meta-item i { font-size: 12px; color: var(--text3); }
+  .snack-line {
+    font-size: 11px;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 12px;
+    opacity: 0.85;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .avatars { display: flex; }
+  .av {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 600;
+    margin-left: -7px;
+    transition: transform 0.2s;
+  }
+  .av:first-child { margin-left: 0; }
+  .avatars:hover .av { transform: translateX(2px); }
+  .av-purple { background: var(--purple-dim); color: var(--purple-light); }
+  .av-green { background: var(--green-dim); color: var(--green); }
+  .av-amber { background: var(--amber-dim); color: var(--amber); }
+  .av-teal { background: var(--teal-dim); color: var(--teal); }
+  .spots-text { font-size: 11px; color: var(--text3); margin-top: 3px; }
+  .spots-text b { color: var(--text2); }
+
+  .join-btn {
+    padding: 8px 20px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--purple);
+    background: var(--purple-dim);
+    color: var(--purple-light);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: 'Inter', sans-serif;
+  }
+  .join-btn:hover { background: var(--purple); color: #fff; }
+  .join-btn.joined { background: var(--green-dim); border-color: var(--green); color: var(--green); }
+
+  /* FAB */
+  .fab-wrap {
+    position: sticky;
+    bottom: 16px;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0;
+    margin-top: 4px;
+    pointer-events: none;
+  }
+  .fab {
+    pointer-events: all;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 22px;
+    border-radius: var(--radius-pill);
+    border: none;
+    background: var(--purple);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.18s;
+    box-shadow: 0 4px 24px rgba(124,111,247,0.4);
+  }
+  .fab:hover { background: #9186f9; transform: scale(1.03); box-shadow: 0 8px 32px rgba(124,111,247,0.5); }
+  .fab:active { transform: scale(0.98); }
+
+  /* DETAIL SCREEN */
+  .detail-hero {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--purple-light);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 14px;
+    padding: 0;
+    transition: opacity 0.18s;
+  }
+  .back-btn:hover { opacity: 0.75; }
+  .detail-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .detail-sub { font-size: 13px; color: var(--text2); }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .info-tile {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+  }
+  .info-label { font-size: 10px; color: var(--text3); font-weight: 500; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .info-value { font-size: 13px; font-weight: 500; color: var(--text); }
+
+  .sub-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 10px; }
+
+  .player-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .player-row:last-child { border-bottom: none; }
+  .player-av {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600;
+    flex-shrink: 0;
+  }
+  .player-name { font-size: 13px; font-weight: 500; color: var(--text); }
+  .player-role { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  .karma-chip {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 3px;
+    font-size: 12px; font-weight: 600; color: var(--amber);
+  }
+  .karma-chip i { font-size: 11px; }
+
+  .desc-text { font-size: 13px; color: var(--text2); line-height: 1.65; }
+
+  .big-btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: var(--radius);
+    border: none;
+    background: var(--purple);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.18s;
+    box-shadow: 0 4px 20px rgba(124,111,247,0.35);
+  }
+  .big-btn:hover { background: #9186f9; box-shadow: 0 6px 28px rgba(124,111,247,0.45); }
+
+  /* PROFILE */
+  .profile-header {
+    padding: 52px 20px 20px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    background: var(--bg2);
+  }
+  .profile-header .back-btn { position: absolute; top: 16px; left: 20px; }
+  .profile-top { display: flex; align-items: flex-end; gap: 16px; }
+  .profile-av {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: var(--purple-dim);
+    border: 2px solid var(--purple);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px; font-weight: 700; color: var(--purple-light);
+    flex-shrink: 0;
+  }
+  .profile-name { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; color: var(--text); }
+  .profile-meta { font-size: 12px; color: var(--text3); margin-top: 3px; }
+  .karma-big { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+  .karma-num { font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700; color: var(--amber); }
+  .karma-stars { display: flex; gap: 3px; color: var(--amber); font-size: 14px; }
+  .karma-label { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .tag-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+  .col-tag {
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    font-size: 12px; font-weight: 500;
+    background: var(--purple-dim); color: var(--purple-light);
+    border: 1px solid rgba(124,111,247,0.25);
+  }
+  .style-tag {
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    font-size: 12px; font-weight: 500;
+    border: 1px solid var(--border2); color: var(--text3);
+    background: var(--surface); cursor: pointer; transition: all 0.18s;
+  }
+  .style-tag.sel { background: var(--purple-dim); border-color: var(--purple); color: var(--purple-light); }
+
+  .review-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+  .review-top { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .reviewer { font-size: 13px; font-weight: 600; color: var(--text); }
+  .review-text { font-size: 12px; color: var(--text2); line-height: 1.5; }
+
+  /* MAP */
+  .map-mock {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    height: 180px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .map-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(124,111,247,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,111,247,0.04) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+  .map-center-text { font-size: 13px; color: var(--text2); position: relative; z-index: 1; text-align: center; }
+  .map-icon { font-size: 28px; color: var(--purple-light); position: relative; z-index: 1; }
+
+  .pin-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .pin-row:hover { border-color: var(--border2); background: var(--surface2); }
+  .pin-icon {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .pin-name { font-size: 13px; font-weight: 500; color: var(--text); }
+  .pin-meta { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .pin-dist { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--purple-light); flex-shrink: 0; }
+
+  /* CHAT LIST */
+  .chat-preview {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.18s;
+  }
+  .chat-preview:hover { background: var(--surface); }
+  .chat-av {
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .chat-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .chat-last { font-size: 12px; color: var(--text3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px; }
+  .chat-time { font-size: 11px; color: var(--text3); flex-shrink: 0; }
+  .unread-dot {
+    margin-top: 4px;
+    width: 20px; height: 20px;
+    background: var(--purple);
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    margin-left: auto;
+  }
+
+  /* CHAT DETAIL */
+  .chat-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+    flex-shrink: 0;
+  }
+  .chat-header-info .ch-name { font-size: 14px; font-weight: 600; color: var(--text); }
+  .chat-header-info .ch-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  .chat-msgs {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 16px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scrollbar-width: none;
+  }
+  .chat-msgs::-webkit-scrollbar { display: none; }
+  .sys-msg {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text3);
+    background: var(--surface);
+    border-radius: var(--radius-pill);
+    padding: 5px 14px;
+    align-self: center;
+    border: 1px solid var(--border);
+  }
+  .msg { display: flex; flex-direction: column; max-width: 78%; }
+  .msg.mine { align-self: flex-end; align-items: flex-end; }
+  .msg.theirs { align-self: flex-start; align-items: flex-start; }
+  .msg-sender { font-size: 10px; color: var(--text3); margin-bottom: 3px; }
+  .msg-bubble {
+    padding: 10px 14px;
+    border-radius: 18px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--text);
+  }
+  .msg.mine .msg-bubble {
+    background: var(--purple);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+  }
+  .msg.theirs .msg-bubble {
+    background: var(--surface2);
+    border-bottom-left-radius: 4px;
+  }
+  .msg-time { font-size: 10px; color: var(--text3); margin-top: 3px; }
+
+  .chat-input-wrap {
+    display: flex;
+    gap: 10px;
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    background: var(--bg2);
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .chat-input-wrap input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-pill);
+    padding: 10px 16px;
+    font-size: 13px;
+    color: var(--text);
+    outline: none;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.18s;
+  }
+  .chat-input-wrap input:focus { border-color: var(--purple); }
+  .chat-input-wrap input::placeholder { color: var(--text3); }
+  .send-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--purple);
+    border: none;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.18s;
+    flex-shrink: 0;
+  }
+  .send-btn:hover { background: #9186f9; transform: scale(1.08); }
+
+  /* NOTIF */
+  .notif-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+    flex-shrink: 0;
+  }
+  .notif-item {
+    display: flex;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.18s;
+    cursor: pointer;
+    align-items: flex-start;
+  }
+  .notif-item:hover { background: var(--surface); }
+  .notif-item.unread { background: rgba(124,111,247,0.04); }
+  .notif-icon-wrap {
+    width: 38px; height: 38px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .notif-text-wrap { flex: 1; }
+  .notif-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+  .notif-text b { color: var(--text); font-weight: 600; }
+  .notif-time { font-size: 11px; color: var(--text3); margin-top: 3px; }
+
+  /* D&D SCREEN */
+  .rpg-banner {
+    background: var(--purple-dim);
+    border: 1px solid rgba(124,111,247,0.25);
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .rpg-banner-icon { font-size: 28px; flex-shrink: 0; }
+  .rpg-banner-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--purple-light);
+    margin-bottom: 2px;
+  }
+  .rpg-banner-sub { font-size: 12px; color: var(--text3); }
+
+  .dm-alert {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--red-dim);
+    border: 1px solid rgba(240,91,91,0.3);
+    border-radius: var(--radius-pill);
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--red);
+    margin-bottom: 10px;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-pill);
+    padding: 12px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    z-index: 1000;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* MODAL OVERLAY */
+  .modal-bg {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(2px);
+    z-index: 50;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .modal-bg.open { display: flex; }
+  .modal {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius) var(--radius) 0 0;
+    padding: 24px 20px 32px;
+    width: 100%;
+    animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .modal-handle {
+    width: 36px; height: 4px;
+    background: var(--border2);
+    border-radius: 2px;
+    margin: 0 auto 20px;
+  }
+  .modal-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px; font-weight: 700;
+    color: var(--text); margin-bottom: 16px;
+  }
+  .form-group { margin-bottom: 14px; }
+  .form-label { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; display: block; }
+  .form-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    padding: 11px 14px;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.18s;
+  }
+  .form-input:focus { border-color: var(--purple); }
+  .form-select {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    padding: 11px 14px;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    font-family: 'Inter', sans-serif;
+    appearance: none;
+    cursor: pointer;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .modal-close { position: absolute; top: 20px; right: 20px; cursor: pointer; color: var(--text3); font-size: 18px; background: none; border: none; }
+
+  /* ANIMATIONS */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .screen.active .session-card,
+  .screen.active .pin-row,
+  .screen.active .info-tile,
+  .screen.active .review-card { animation: fadeIn 0.25s ease both; }
+  .screen.active .session-card:nth-child(2) { animation-delay: 0.04s; }
+  .screen.active .session-card:nth-child(3) { animation-delay: 0.08s; }
+  .screen.active .session-card:nth-child(4) { animation-delay: 0.12s; }
+
+  @media (max-width: 430px) {
+    body { padding: 0; align-items: flex-start; }
+    .phone { width: 100%; min-height: 100vh; border-radius: 0; border: none; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<div class="phone">
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <span id="clock">21:42</span>
+    <div class="status-icons">
+      <i class="fa fa-signal"></i>
+      <i class="fa fa-wifi"></i>
+      <i class="fa fa-battery-three-quarters"></i>
+    </div>
+  </div>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-row">
+      <span class="app-logo">🎲 GejmVeče</span>
+      <div class="topbar-actions">
+        <button class="icon-btn" onclick="pushScreen('notif')" title="Obaveštenja">
+          <i class="fa fa-bell"></i>
+          <span class="notif-badge"></span>
+        </button>
+        <div class="avatar-btn" onclick="pushScreen('profile')">MN</div>
+      </div>
+    </div>
+    <div class="tab-bar">
+      <button class="tab active" onclick="switchTab(this,'explore')"><i class="fa fa-compass"></i>Istraži</button>
+      <button class="tab" onclick="switchTab(this,'map')"><i class="fa fa-map-marker-alt"></i>Mapa</button>
+      <button class="tab" onclick="switchTab(this,'chat-list')"><i class="fa fa-comment"></i>Čet</button>
+      <button class="tab" onclick="switchTab(this,'dnd')"><i class="fa fa-shield-alt"></i>D&D/RPG</button>
+    </div>
+  </div>
+
+  <!-- ============ EXPLORE ============ -->
+  <div class="screen active" id="screen-explore">
+    <div class="scroll-content">
+      <div class="search-bar">
+        <i class="fa fa-search"></i>
+        <input type="text" placeholder="Traži igru, lokaciju...">
+        <i class="fa fa-sliders-h search-filter-btn"></i>
+      </div>
+      <div class="chip-row">
+        <span class="chip active" onclick="toggleChip(this)">Sve</span>
+        <span class="chip" onclick="toggleChip(this)">Večeras</span>
+        <span class="chip" onclick="toggleChip(this)">Vikend</span>
+        <span class="chip" onclick="toggleChip(this)">Početnici</span>
+        <span class="chip" onclick="toggleChip(this)">≤ 3km</span>
+        <span class="chip" onclick="toggleChip(this)">D&D</span>
+        <span class="chip" onclick="toggleChip(this)">Strategija</span>
+      </div>
+
+      <span class="section-label">Večeras u blizini</span>
+
+      <div class="session-card rpg" onclick="pushScreen('detail-dnd')">
+        <div class="card-head">
+          <span class="card-title">D&D 5e – Izgubljeni rudnik</span>
+          <span class="badge badge-rpg">RPG</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-item"><i class="fa fa-clock"></i> Danas 19:00</span>
+          <span class="meta-item"><i class="fa fa-map-marker-alt"></i> Voždovac, 1.2km</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-item"><i class="fa fa-home"></i> Kod organizatora</span>
+          <span class="meta-item"><i class="fa fa-crown"></i> DM obezbeđen</span>
+        </div>
+        <div class="snack-line"><i class="fa fa-glass-cheers"></i> Pića i grickalice obezbeđene</div>
+        <div class="card-footer">
+          <div>
+            <div class="avatars">
+              <div class="av av-purple">AK</div>
+              <div class="av av-green">JM</div>
+              <div class="av av-amber">SR</div>
+            </div>
+            <div class="spots-text"><b>1 mesto</b> slobodno od 4</div>
+          </div>
+          <button class="join-btn" onclick="handleJoin(event,this)">Prijavi se</button>
+        </div>
+      </div>
+
+      <div class="session-card strat" onclick="pushScreen('detail-catan')">
+        <div class="card-head">
+          <span class="card-title">Catan + ekspanzija Morari</span>
+          <span class="badge badge-strat">Strategija</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-item"><i class="fa fa-clock"></i> Subota 15:00</span>
+          <span class="meta-item"><i class="fa fa-map-marker-alt"></i> Palilula, 2.8km</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-item"><i class="fa fa-building"></i> Board game kafić</span>
+          <span class="meta-item"><i class="fa fa-users"></i> Iskusni igrači</span>
+        </div>
+        <div class="card-footer">
+          <div>
+            <div class="avatars">
+              <div class="av av-amber">TK</div>
+              <div class="av av-teal">PJ</div>
+            </div>
+            <div class="spots-text"><b>2 mesta</b> slobodna od 4</div>
+          </div>
+          <button class="join-btn" onclick="handleJoin(event,this)">Prijavi se</button>
+        </div>
+      </div>
+
+      <div class="session-card party" onclick="pushScreen('detail-codenames')">
+        <div class="card-head">
+          <span class="card-title">Codenames – večera za početnike</span>
+          <span class="badge badge-party">Party</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-item"><i class="fa fa-clock"></i> Petak 20:30</span>
+          <span class="meta-item"><i class="fa fa-map-marker-alt"></i> Zvezdara, 0.6km</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-item"><i class="fa fa-home"></i> Kod organizatora</span>
+          <span class="meta-item"><i class="fa fa-smile"></i> Svi dobrodošli</span>
+        </div>
+        <div class="snack-line"><i class="fa fa-pizza-slice"></i> Donesi nešto za zalogaj</div>
+        <div class="card-footer">
+          <div>
+            <div class="avatars">
+              <div class="av av-amber">TM</div>
+              <div class="av av-green">LS</div>
+              <div class="av av-purple">KD</div>
+              <div class="av av-teal">+2</div>
+            </div>
+            <div class="spots-text"><b>2 mesta</b> slobodna od 8</div>
+          </div>
+          <button class="join-btn" onclick="handleJoin(event,this)">Prijavi se</button>
+        </div>
+      </div>
+
+      <span class="section-label">Uskoro</span>
+      <div class="session-card strat">
+        <div class="card-head">
+          <span class="card-title">Wingspan – prirodnjačka strategija</span>
+          <span class="badge badge-strat">Strategija</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-item"><i class="fa fa-clock"></i> Ned 16:00</span>
+          <span class="meta-item"><i class="fa fa-map-marker-alt"></i> Centar, 4.1km</span>
+        </div>
+        <div class="card-footer" style="margin-top:10px">
+          <div>
+            <div class="avatars"><div class="av av-green">MK</div></div>
+            <div class="spots-text"><b>3 mesta</b> slobodna od 4</div>
+          </div>
+          <button class="join-btn" onclick="handleJoin(event,this)">Prijavi se</button>
+        </div>
+      </div>
+
+      <div class="fab-wrap">
+        <button class="fab" onclick="openModal()"><i class="fa fa-plus"></i> Kreiraj večer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MAP ============ -->
+  <div class="screen" id="screen-map">
+    <div class="scroll-content">
+      <div class="map-mock">
+        <div class="map-grid"></div>
+        <i class="fa fa-map-marked-alt map-icon"></i>
+        <div class="map-center-text">Interaktivna mapa<br><span style="font-size:11px;color:var(--text3)">Google Maps integracija</span></div>
+      </div>
+      <span class="section-label">Lokacije u blizini</span>
+      <div class="pin-row">
+        <div class="pin-icon" style="background:var(--purple-dim)"><i class="fa fa-dungeon" style="color:var(--purple-light)"></i></div>
+        <div>
+          <div class="pin-name">Dungeon Board Game Klub</div>
+          <div class="pin-meta">Pon–Ned 14–23h · Popust za korisnike</div>
+        </div>
+        <span class="pin-dist">0.9km</span>
+      </div>
+      <div class="pin-row">
+        <div class="pin-icon" style="background:var(--green-dim)"><i class="fa fa-home" style="color:var(--green)"></i></div>
+        <div>
+          <div class="pin-name">D&D One-Shot – Aleksina ekipa</div>
+          <div class="pin-meta">Večeras 19:00 · Adresa posle prijave</div>
+        </div>
+        <span class="pin-dist">1.2km</span>
+      </div>
+      <div class="pin-row">
+        <div class="pin-icon" style="background:var(--amber-dim)"><i class="fa fa-coffee" style="color:var(--amber)"></i></div>
+        <div>
+          <div class="pin-name">Kafić „Pijun"</div>
+          <div class="pin-meta">200+ igara za iznajmljivanje · Svakog dana</div>
+        </div>
+        <span class="pin-dist">2.1km</span>
+      </div>
+      <div class="pin-row">
+        <div class="pin-icon" style="background:var(--teal-dim)"><i class="fa fa-store" style="color:var(--teal)"></i></div>
+        <div>
+          <div class="pin-name">Hobbit Prodavnica igara</div>
+          <div class="pin-meta">Prodaja i iznajmljivanje · Pon–Sub</div>
+        </div>
+        <span class="pin-dist">3.3km</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ CHAT LIST ============ -->
+  <div class="screen" id="screen-chat-list">
+    <div style="padding:16px 20px 8px"><span class="section-label">Aktivni četovi</span></div>
+    <div class="chat-preview" onclick="pushScreen('chat-dnd')">
+      <div class="chat-av" style="background:var(--purple-dim)">🛡️</div>
+      <div style="flex:1;min-width:0">
+        <div class="chat-title">D&D One-Shot – Večeras</div>
+        <div class="chat-last">Aleksa: Ko donosi mini figurice?</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+        <span class="chat-time">18:32</span>
+        <div class="unread-dot">3</div>
+      </div>
+    </div>
+    <div class="chat-preview" onclick="pushScreen('chat-catan')">
+      <div class="chat-av" style="background:var(--green-dim)">🌾</div>
+      <div style="flex:1;min-width:0">
+        <div class="chat-title">Catan – Subota ekipa</div>
+        <div class="chat-last">Tamara: Donosim Morari ekspanziju!</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+        <span class="chat-time">Juče</span>
+      </div>
+    </div>
+    <div class="chat-preview">
+      <div class="chat-av" style="background:var(--amber-dim)">🔑</div>
+      <div style="flex:1;min-width:0">
+        <div class="chat-title">Codenames – Petak</div>
+        <div class="chat-last">Tanja: Vidimo se u 20:30 👋</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+        <span class="chat-time">Pon</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ D&D ============ -->
+  <div class="screen" id="screen-dnd">
+    <div class="scroll-content">
+      <div class="rpg-banner">
+        <div class="rpg-banner-icon">⚔️</div>
+        <div>
+          <div class="rpg-banner-title">D&D / RPG modul</div>
+          <div class="rpg-banner-sub">Posebna sekcija za table-top RPG avanture</div>
+        </div>
+      </div>
+      <div class="chip-row">
+        <span class="chip active" onclick="toggleChip(this)">Sve RPG</span>
+        <span class="chip" onclick="toggleChip(this)">Traži se DM</span>
+        <span class="chip" onclick="toggleChip(this)">One-Shot</span>
+        <span class="chip" onclick="toggleChip(this)">Kampanja</span>
+        <span class="chip" onclick="toggleChip(this)">D&D 5e</span>
+        <span class="chip" onclick="toggleChip(this)">Pathfinder</span>
+      </div>
+      <div class="session-card rpg" onclick="pushScreen('detail-dnd')">
+        <span class="badge badge-oneshot" style="margin-bottom:8px;display:inline-block">One-Shot</span>
+        <div class="card-head">
+          <span class="card-title">D&D 5e – Izgubljeni rudnik</span>
+          <span class="badge badge-rpg">D&D 5e</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-item"><i class="fa fa-clock"></i> Danas 19:00 · ~4h</span>
+          <span class="meta-item"><i class="fa fa-crown"></i> DM: Aleksa K.</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-item"><i class="fa fa-book"></i> 5. edicija</span>
+          <span class="meta-item"><i class="fa fa-smile"></i> Početnici ok</span>
+        </div>
+        <div class="card-footer" style="margin-top:10px">
+          <span style="font-size:12px;color:var(--text3)"><b style="color:var(--text2)">1 mesto</b> od 4</span>
+          <button class="join-btn" onclick="handleJoin(event,this)">Prijavi se</button>
+        </div>
+      </div>
+
+      <div class="session-card rpg">
+        <div class="dm-alert"><i class="fa fa-exclamation-triangle"></i> Traži se DM!</div>
+        <div class="card-head">
+          <span class="card-title">Pathfinder 2e – Dugoročna kampanja</span>
+          <span class="badge badge-rpg">Kampanja</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-item"><i class="fa fa-calendar"></i> Svake subote 16:00</span>
+          <span class="meta-item"><i class="fa fa-map-marker-alt"></i> Centar, 3.1km</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-item"><i class="fa fa-users"></i> 4 igrača čekaju DM-a</span>
+          <span class="meta-item"><i class="fa fa-book"></i> Pathfinder 2e</span>
+        </div>
+        <div class="card-footer" style="margin-top:10px">
+          <span style="font-size:12px;color:var(--text3)">Ekipa formirana</span>
+          <button class="join-btn" onclick="handleJoin(event,this)">Postani DM</button>
+        </div>
+      </div>
+
+      <div class="session-card rpg">
+        <span class="badge badge-oneshot" style="margin-bottom:8px;display:inline-block">One-Shot</span>
+        <div class="card-head">
+          <span class="card-title">Call of Cthulhu – Istraga u Beogradu</span>
+          <span class="badge badge-rpg">CoC</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-item"><i class="fa fa-clock"></i> Ned 18:00 · ~5h</span>
+          <span class="meta-item"><i class="fa fa-map-marker-alt"></i> Vračar, 2.0km</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-item"><i class="fa fa-skull"></i> Horror tema</span>
+          <span class="meta-item"><i class="fa fa-users"></i> Iskusni igrači</span>
+        </div>
+        <div class="card-footer" style="margin-top:10px">
+          <span style="font-size:12px;color:var(--text3)"><b style="color:var(--text2)">2 mesta</b> od 4</span>
+          <button class="join-btn" onclick="handleJoin(event,this)">Prijavi se</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DETAIL - DND ============ -->
+  <div class="screen" id="screen-detail-dnd">
+    <div class="detail-hero">
+      <button class="back-btn" onclick="popScreen()"><i class="fa fa-arrow-left"></i> Nazad</button>
+      <div class="detail-title">D&D 5e – Izgubljeni rudnik</div>
+      <div class="detail-sub">One-Shot · Danas 19:00 · Voždovac</div>
+    </div>
+    <div class="scroll-content">
+      <div class="info-grid">
+        <div class="info-tile"><div class="info-label">Datum i vreme</div><div class="info-value">Danas, 19:00</div></div>
+        <div class="info-tile"><div class="info-label">Trajanje</div><div class="info-value">~4 sata</div></div>
+        <div class="info-tile"><div class="info-label">Lokacija</div><div class="info-value">Kod DM-a (posle prijave)</div></div>
+        <div class="info-tile"><div class="info-label">Sistem</div><div class="info-value">D&D 5e</div></div>
+        <div class="info-tile"><div class="info-label">Maks. igrača</div><div class="info-value">4 (1 slobodno)</div></div>
+        <div class="info-tile"><div class="info-label">Nivo</div><div class="info-value">Početnici ok</div></div>
+      </div>
+      <div>
+        <div class="sub-title">Organizator i igrači</div>
+        <div class="player-row">
+          <div class="player-av av-purple">AK</div>
+          <div><div class="player-name">Aleksa Kovačević</div><div class="player-role">Dungeon Master</div></div>
+          <div class="karma-chip"><i class="fa fa-star"></i> 5.0</div>
+        </div>
+        <div class="player-row">
+          <div class="player-av av-green">JM</div>
+          <div><div class="player-name">Jovan Marković</div><div class="player-role">Igrač · Fighter</div></div>
+          <div class="karma-chip"><i class="fa fa-star"></i> 4.8</div>
+        </div>
+        <div class="player-row">
+          <div class="player-av av-amber">SR</div>
+          <div><div class="player-name">Sara Rajić</div><div class="player-role">Igrač · Rogue</div></div>
+          <div class="karma-chip"><i class="fa fa-star"></i> 4.9</div>
+        </div>
+      </div>
+      <div>
+        <div class="sub-title">O sesiji</div>
+        <div class="desc-text">Klasičan D&D 5e one-shot za početnike i iskusne igrače. DM obezbeđuje sve priručnike i mini figurice. Grickalice i piće na stolu – samo dođi spreman na avanturu!</div>
+      </div>
+      <button class="big-btn" onclick="showToast('Prijava uspešna! Dodat si u grupni čet. 🎲')">Prijavi se na sesiju</button>
+    </div>
+  </div>
+
+  <!-- ============ DETAIL - CATAN ============ -->
+  <div class="screen" id="screen-detail-catan">
+    <div class="detail-hero">
+      <button class="back-btn" onclick="popScreen()"><i class="fa fa-arrow-left"></i> Nazad</button>
+      <div class="detail-title">Catan + ekspanzija Morari</div>
+      <div class="detail-sub">Strategija · Subota 15:00 · Palilula</div>
+    </div>
+    <div class="scroll-content">
+      <div class="info-grid">
+        <div class="info-tile"><div class="info-label">Datum i vreme</div><div class="info-value">Subota, 15:00</div></div>
+        <div class="info-tile"><div class="info-label">Trajanje</div><div class="info-value">2–3 sata</div></div>
+        <div class="info-tile"><div class="info-label">Lokacija</div><div class="info-value">Kafić „Pijun"</div></div>
+        <div class="info-tile"><div class="info-label">Igra</div><div class="info-value">Catan + Morari</div></div>
+        <div class="info-tile"><div class="info-label">Maks. igrača</div><div class="info-value">4 (2 slobodna)</div></div>
+        <div class="info-tile"><div class="info-label">Nivo</div><div class="info-value">Iskusni igrači</div></div>
+      </div>
+      <div>
+        <div class="sub-title">Igrači</div>
+        <div class="player-row">
+          <div class="player-av av-amber">TK</div>
+          <div><div class="player-name">Tamara Krstić</div><div class="player-role">Organizator · Ima Catan set</div></div>
+          <div class="karma-chip"><i class="fa fa-star"></i> 4.7</div>
+        </div>
+        <div class="player-row">
+          <div class="player-av av-teal">PJ</div>
+          <div><div class="player-name">Petar Jović</div><div class="player-role">Igrač</div></div>
+          <div class="karma-chip"><i class="fa fa-star"></i> 4.5</div>
+        </div>
+      </div>
+      <div>
+        <div class="sub-title">O sesiji</div>
+        <div class="desc-text">Kompetitivna partija Catana sa Morari ekspanzijom. Traže se iskusni igrači koji znaju pravila! Kafić naplaćuje sto 300 din/po osobi.</div>
+      </div>
+      <button class="big-btn" onclick="showToast('Prijava uspešna! Dodat si u grupni čet. 🌾')">Prijavi se na sesiju</button>
+    </div>
+  </div>
+
+  <!-- ============ DETAIL - CODENAMES ============ -->
+  <div class="screen" id="screen-detail-codenames">
+    <div class="detail-hero">
+      <button class="back-btn" onclick="popScreen()"><i class="fa fa-arrow-left"></i> Nazad</button>
+      <div class="detail-title">Codenames – večera za početnike</div>
+      <div class="detail-sub">Party igra · Petak 20:30 · Zvezdara</div>
+    </div>
+    <div class="scroll-content">
+      <div class="info-grid">
+        <div class="info-tile"><div class="info-label">Datum i vreme</div><div class="info-value">Petak, 20:30</div></div>
+        <div class="info-tile"><div class="info-label">Trajanje</div><div class="info-value">2–3 sata</div></div>
+        <div class="info-tile"><div class="info-label">Lokacija</div><div class="info-value">Kod organizatora</div></div>
+        <div class="info-tile"><div class="info-label">Igra</div><div class="info-value">Codenames + Duet</div></div>
+        <div class="info-tile"><div class="info-label">Maks. igrača</div><div class="info-value">8 (2 slobodna)</div></div>
+        <div class="info-tile"><div class="info-label">Nivo</div><div class="info-value">Svi dobrodošli</div></div>
+      </div>
+      <div>
+        <div class="sub-title">Igrači</div>
+        <div class="player-row">
+          <div class="player-av av-amber">TM</div>
+          <div><div class="player-name">Tanja Milić</div><div class="player-role">Organizator</div></div>
+          <div class="karma-chip"><i class="fa fa-star"></i> 4.9</div>
+        </div>
+        <div class="player-row">
+          <div class="player-av av-green">LS</div>
+          <div><div class="player-name">Luka Stanić</div><div class="player-role">Igrač</div></div>
+          <div class="karma-chip"><i class="fa fa-star"></i> 4.6</div>
+        </div>
+        <div class="player-row">
+          <div class="player-av av-purple">KD</div>
+          <div><div class="player-name">Katarina Đorić</div><div class="player-role">Igrač</div></div>
+          <div class="karma-chip"><i class="fa fa-star"></i> 5.0</div>
+        </div>
+      </div>
+      <button class="big-btn" onclick="showToast('Prijava uspešna! Vidimo se u petak! 🔑')">Prijavi se na sesiju</button>
+    </div>
+  </div>
+
+  <!-- ============ PROFILE ============ -->
+  <div class="screen" id="screen-profile">
+    <div class="profile-header">
+      <button class="back-btn" onclick="popScreen()"><i class="fa fa-arrow-left"></i></button>
+      <div class="profile-top">
+        <div class="profile-av">MN</div>
+        <div>
+          <div class="profile-name">Marko Nikolić</div>
+          <div class="profile-meta">Beograd · Član od 2024.</div>
+          <div class="karma-big">
+            <span class="karma-num">4.9</span>
+            <div>
+              <div class="karma-stars">
+                <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+              </div>
+              <div class="karma-label">28 ocena · Karma: Pouzdanost 🏆</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-content">
+      <div>
+        <div class="sub-title">Moja kolekcija igara</div>
+        <div class="tag-wrap">
+          <span class="col-tag">Catan</span>
+          <span class="col-tag">+ Morari</span>
+          <span class="col-tag">Codenames</span>
+          <span class="col-tag">D&D priručnici</span>
+          <span class="col-tag">Wingspan</span>
+          <span class="col-tag">Pandemic</span>
+          <span class="col-tag">+ Dodaj</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub-title">Stil igranja</div>
+        <div class="tag-wrap">
+          <span class="style-tag sel" onclick="this.classList.toggle('sel')">Teška strategija</span>
+          <span class="style-tag sel" onclick="this.classList.toggle('sel')">RPG avanture</span>
+          <span class="style-tag" onclick="this.classList.toggle('sel')">Party igre</span>
+          <span class="style-tag" onclick="this.classList.toggle('sel')">Kooperativne</span>
+          <span class="style-tag" onclick="this.classList.toggle('sel')">Ekonomske</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub-title">Ocene od igrača</div>
+        <div class="review-card">
+          <div class="review-top"><span class="reviewer">Jovan M.</span><span class="karma-chip"><i class="fa fa-star"></i> 5.0</span></div>
+          <div class="review-text">„Zna pravila napamet. Objasnio D&D noob-ima za 10 min. 👍"</div>
+        </div>
+        <div class="review-card">
+          <div class="review-top"><span class="reviewer">Sara R.</span><span class="karma-chip"><i class="fa fa-star"></i> 5.0</span></div>
+          <div class="review-text">„Pouzdan – uvek dolazi na vreme i donese ekspanziju!"</div>
+        </div>
+        <div class="review-card">
+          <div class="review-top"><span class="reviewer">Tamara K.</span><span class="karma-chip"><i class="fa fa-star"></i> 4.5</span></div>
+          <div class="review-text">„Super lik za stol, malo preozbiljan za Codenames lol"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ CHAT - DND ============ -->
+  <div class="screen" id="screen-chat-dnd">
+    <div class="chat-header">
+      <button class="back-btn" onclick="popScreen()" style="margin-bottom:0"><i class="fa fa-arrow-left"></i></button>
+      <div class="chat-av" style="background:var(--purple-dim);width:36px;height:36px;border-radius:10px;font-size:16px">🛡️</div>
+      <div class="chat-header-info">
+        <div class="ch-name">D&D One-Shot – Večeras</div>
+        <div class="ch-sub"><i class="fa fa-users" style="font-size:10px"></i> 4 igrača · Danas 19:00</div>
+      </div>
+    </div>
+    <div class="chat-msgs" id="chat-msgs-dnd">
+      <div class="sys-msg">📅 Podsetnik: Danas u 19:00 – za 2 sata!</div>
+      <div class="msg theirs">
+        <span class="msg-sender">Aleksa (DM)</span>
+        <div class="msg-bubble">Zdravo svima! Ko donosi mini figurice? 🎲</div>
+        <span class="msg-time">18:32</span>
+      </div>
+      <div class="msg theirs">
+        <span class="msg-sender">Jovan</span>
+        <div class="msg-bubble">Imam 3 figurice, mogu da donesem 🧙</div>
+        <span class="msg-time">18:35</span>
+      </div>
+      <div class="msg theirs">
+        <span class="msg-sender">Sara</span>
+        <div class="msg-bubble">Ja donosim čips i kolu, neko neka uzme sok!</div>
+        <span class="msg-time">18:41</span>
+      </div>
+      <div class="msg mine">
+        <div class="msg-bubble">Uzimam sok i nachos 🙌</div>
+        <span class="msg-time">18:45</span>
+      </div>
+    </div>
+    <div class="chat-input-wrap">
+      <input type="text" id="chat-input-dnd" placeholder="Poruka..." onkeydown="if(event.key==='Enter')sendMsg('dnd')">
+      <button class="send-btn" onclick="sendMsg('dnd')"><i class="fa fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- ============ CHAT - CATAN ============ -->
+  <div class="screen" id="screen-chat-catan">
+    <div class="chat-header">
+      <button class="back-btn" onclick="popScreen()" style="margin-bottom:0"><i class="fa fa-arrow-left"></i></button>
+      <div class="chat-av" style="background:var(--green-dim);width:36px;height:36px;border-radius:10px;font-size:16px">🌾</div>
+      <div class="chat-header-info">
+        <div class="ch-name">Catan – Subota ekipa</div>
+        <div class="ch-sub"><i class="fa fa-users" style="font-size:10px"></i> 2 igrača · Subota 15:00</div>
+      </div>
+    </div>
+    <div class="chat-msgs" id="chat-msgs-catan">
+      <div class="sys-msg">🌾 Catan večer potvrđena za subotu!</div>
+      <div class="msg theirs">
+        <span class="msg-sender">Tamara</span>
+        <div class="msg-bubble">Donosim Morari ekspanziju! 🎉</div>
+        <span class="msg-time">Juče 21:10</span>
+      </div>
+      <div class="msg mine">
+        <div class="msg-bubble">Super! Ja donosim kafu ☕</div>
+        <span class="msg-time">Juče 21:14</span>
+      </div>
+    </div>
+    <div class="chat-input-wrap">
+      <input type="text" id="chat-input-catan" placeholder="Poruka..." onkeydown="if(event.key==='Enter')sendMsg('catan')">
+      <button class="send-btn" onclick="sendMsg('catan')"><i class="fa fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- ============ NOTIFICATIONS ============ -->
+  <div class="screen" id="screen-notif">
+    <div class="notif-header">
+      <button class="back-btn" onclick="popScreen()" style="margin-bottom:0"><i class="fa fa-arrow-left"></i></button>
+      <span style="font-size:16px;font-weight:600">Obaveštenja</span>
+    </div>
+    <div style="flex:1;overflow-y:auto">
+      <div class="notif-item unread">
+        <div class="notif-icon-wrap" style="background:var(--purple-dim)"><i class="fa fa-clock" style="color:var(--purple-light)"></i></div>
+        <div class="notif-text-wrap">
+          <div class="notif-text"><b>D&D One-Shot</b> počinje za 2 sata! Adresa: Vojislava Ilića 12, Voždovac.</div>
+          <div class="notif-time">Upravo</div>
+        </div>
+      </div>
+      <div class="notif-item unread">
+        <div class="notif-icon-wrap" style="background:var(--green-dim)"><i class="fa fa-user-check" style="color:var(--green)"></i></div>
+        <div class="notif-text-wrap">
+          <div class="notif-text"><b>Aleksa K.</b> prihvatio tvoju prijavu za D&D večer 🎉</div>
+          <div class="notif-time">Pre 15 min</div>
+        </div>
+      </div>
+      <div class="notif-item unread">
+        <div class="notif-icon-wrap" style="background:var(--amber-dim)"><i class="fa fa-star" style="color:var(--amber)"></i></div>
+        <div class="notif-text-wrap">
+          <div class="notif-text"><b>Jovan M.</b> te ocenio posle Catan večeri: „Odličan igrač, zna pravila!"</div>
+          <div class="notif-time">Pre 1h</div>
+        </div>
+      </div>
+      <div class="notif-item">
+        <div class="notif-icon-wrap" style="background:var(--purple-dim)"><i class="fa fa-bell" style="color:var(--purple-light)"></i></div>
+        <div class="notif-text-wrap">
+          <div class="notif-text"><b>Catan večer</b> počinje sutra u 15:00. Nemoj zaboraviti Morari ekspanziju!</div>
+          <div class="notif-time">Pre 3h</div>
+        </div>
+      </div>
+      <div class="notif-item">
+        <div class="notif-icon-wrap" style="background:var(--red-dim)"><i class="fa fa-shield-alt" style="color:var(--red)"></i></div>
+        <div class="notif-text-wrap">
+          <div class="notif-text">Nova D&D kampanja blizu tebe traži DM-a – Pathfinder 2e, Centar Beograda.</div>
+          <div class="notif-time">Juče</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREATE MODAL -->
+  <div class="modal-bg" id="modal-bg" onclick="if(event.target===this)closeModal()">
+    <div class="modal" style="position:relative">
+      <button class="modal-close" onclick="closeModal()"><i class="fa fa-times"></i></button>
+      <div class="modal-handle"></div>
+      <div class="modal-title">Kreiraj večer</div>
+      <div class="form-group">
+        <label class="form-label">Naziv igre</label>
+        <input class="form-input" type="text" placeholder="npr. Catan, D&D 5e, Pandemic...">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Datum</label>
+          <input class="form-input" type="date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Vreme</label>
+          <input class="form-input" type="time" value="19:00">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Maks. igrača</label>
+          <select class="form-select">
+            <option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option><option>8</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nivo</label>
+          <select class="form-select">
+            <option>Početnici ok</option>
+            <option>Iskusni</option>
+            <option>Svi</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Lokacija</label>
+        <select class="form-select">
+          <option>Kod mene</option>
+          <option>Board game kafić</option>
+          <option>Klub</option>
+          <option>Kafić</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Napomena (opciono)</label>
+        <input class="form-input" type="text" placeholder="Donosim igru, piće na stolu...">
+      </div>
+      <button class="big-btn" style="margin-top:6px" onclick="closeModal();showToast('Večer objavljena! Igrači te mogu pronaći. 🎲')">Objavi večer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // CLOCK
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('clock').textContent =
+      now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+  }
+  updateClock(); setInterval(updateClock, 10000);
+
+  // SCREEN STACK
+  const stack = [];
+  function pushScreen(id) {
+    const all = document.querySelectorAll('.screen');
+    all.forEach(s => s.classList.remove('active'));
+    const target = document.getElementById('screen-' + id);
+    if (target) {
+      stack.push(id);
+      target.classList.add('active');
+      target.scrollTop = 0;
+    }
+  }
+  function popScreen() {
+    stack.pop();
+    const all = document.querySelectorAll('.screen');
+    all.forEach(s => s.classList.remove('active'));
+    const prev = stack.length > 0 ? stack[stack.length - 1] : 'explore';
+    const target = document.getElementById('screen-' + prev);
+    if (target) target.classList.add('active');
+    if (stack.length === 0) {
+      // back to main — restore tab
+      const activeTab = document.querySelector('.tab.active');
+      if (activeTab) activeTab.click();
+    }
+  }
+
+  // TABS
+  function switchTab(el, tabId) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    // Clear stack and show tab screen
+    stack.length = 0;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById('screen-' + tabId);
+    if (target) { target.classList.add('active'); stack.push(tabId); }
+  }
+
+  // CHIPS
+  function toggleChip(el) { el.classList.toggle('active'); }
+
+  // JOIN
+  function handleJoin(e, btn) {
+    e.stopPropagation();
+    if (btn.classList.contains('joined')) {
+      btn.classList.remove('joined');
+      btn.textContent = 'Prijavi se';
+    } else {
+      btn.classList.add('joined');
+      btn.textContent = 'Prijavljen ✓';
+      showToast('Uspešno prijavljen! Proveri čet. 🎉');
+    }
+  }
+
+  // TOAST
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // MODAL
+  function openModal() { document.getElementById('modal-bg').classList.add('open'); }
+  function closeModal() { document.getElementById('modal-bg').classList.remove('open'); }
+
+  // CHAT
+  function sendMsg(room) {
+    const input = document.getElementById('chat-input-' + room);
+    const text = input.value.trim();
+    if (!text) return;
+    const container = document.getElementById('chat-msgs-' + room);
+    const now = new Date();
+    const time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+    const div = document.createElement('div');
+    div.className = 'msg mine';
+    div.innerHTML = `<div class="msg-bubble">${text}</div><span class="msg-time">${time}</span>`;
+    container.appendChild(div);
+    input.value = '';
+    container.scrollTop = container.scrollHeight;
+  }
+
+  // Init stack
+  stack.push('explore');
+</script>
+</body>
+</html>
